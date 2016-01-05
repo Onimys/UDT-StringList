@@ -69,7 +69,7 @@ public class StringList : INullable, IBinarySerialize
     /// <param name="item"></param>
     /// <returns></returns>
     [SqlMethod(InvokeIfReceiverIsNull = true)]
-    public StringList AddItem(string item)
+    public StringList Add(string item)
     {
         _list.Add(item ?? "");
         if (is_Null)
@@ -83,13 +83,13 @@ public class StringList : INullable, IBinarySerialize
     /// <param name="items"></param>
     /// <returns></returns>
     [SqlMethod(InvokeIfReceiverIsNull = true)]
-    public StringList AddItems(string items)
+    public StringList AddRange(string items)
     {
         items = items ?? "";
         string[] el = items.Split(_separator);
         foreach (string item in el)
         {
-            _list.Add(item);
+            Add(item);
         }
         if (is_Null)
             is_Null = false;
@@ -99,14 +99,30 @@ public class StringList : INullable, IBinarySerialize
     /// <summary>
     /// Remove item from list
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="index"></param>
     /// <returns></returns>
     [SqlMethod(OnNullCall = true, InvokeIfReceiverIsNull = true)]
-    public StringList RemoveItem(SqlInt32 index)
+    public StringList RemoveByIndex(SqlInt32 index)
     {
         if (IsNull || index > _list.Count - 1 || index < 0 || index.IsNull)
-            throw new ArgumentOutOfRangeException("Invalid index");
+            return this;
         _list.RemoveAt(index.Value);
+        if (_list.Count == 0)
+            is_Null = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Remove item from list
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [SqlMethod(OnNullCall = true, InvokeIfReceiverIsNull = true)]
+    public StringList RemoveByName(SqlString name)
+    {
+        if (IsNull || name.IsNull)
+            return this;
+        _list.Remove(name.Value);
         if (_list.Count == 0)
             is_Null = true;
         return this;
@@ -115,14 +131,57 @@ public class StringList : INullable, IBinarySerialize
     /// <summary>
     /// Remove all items from list
     /// </summary>
-    /// <param name="item"></param>
     /// <returns></returns>
     [SqlMethod(InvokeIfReceiverIsNull = true)]
     public StringList RemoveAll()
     {
-        _list.Clear();
-        is_Null = true;
-        return this;
+        return Null;
+    }
+
+    /// <summary>
+    /// Contains element 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [SqlMethod(InvokeIfReceiverIsNull = true)]
+    public bool Contains(SqlString name)
+    {
+        if (IsNull || name.IsNull)
+            return false;
+
+        return _list.Exists(q => q.Equals(name.Value)); ;
+    }
+
+    /// <summary>
+    /// Exists element
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [SqlMethod(InvokeIfReceiverIsNull = true)]
+    public bool Exists(string name)
+    {
+        if (IsNull)
+            return false;
+
+        return _list.Exists(q => q.Contains(name));
+    }
+
+    /// <summary>
+    /// Sort items
+    /// </summary>
+    [SqlMethod(IsMutator = true)]
+    public void Sort()
+    {
+        _list.Sort();
+    }
+
+    /// <summary>
+    /// Reverse items in list
+    /// </summary>
+    [SqlMethod(IsMutator = true)]
+    public void Reverse()
+    {
+        _list.Reverse();
     }
 
     /// <summary>
@@ -136,6 +195,19 @@ public class StringList : INullable, IBinarySerialize
         if (IsNull || index > _list.Count - 1 || index < 0)
             return "NULL";
         return _list[index];
+    }
+
+    /// <summary>
+    /// Get index by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [SqlMethod(OnNullCall = false)]
+    public SqlInt32 GetIndex(SqlString name)
+    {
+        if (IsNull || name.IsNull)
+            return SqlInt32.Null;
+        return _list.FindIndex( q => q.Equals(name.Value));
     }
 
     /// <summary>
