@@ -28,3 +28,10 @@ EXTERNAL NAME StringList.[StringList];
 ```
 
 ### Use It
+As a separator used symbol **«|»**
+- Declare Variables
+```sh
+Declare @List StringList
+Declare @List StringList = 'Hello, world | !?'
+```
+- 
