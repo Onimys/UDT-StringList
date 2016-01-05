@@ -54,5 +54,14 @@ select @List2.Length() //return: 2
 select @List1.isEmpty() //return: 1 - true
 select @List2.isEmpty() //return: 0 - false
 ```
+- Format message
+```sh
+select @List.Formated('{0} - this {1} {2}') //return: 'Hello, world  - this  !? '
+```
+or use static method
+```sh
+select StringList::FormatMessage('{0} big {1} - this big {1}!', 'Hello|world') //return: 'Hello big world - this big world!'
+```
+
 
 
