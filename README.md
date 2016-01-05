@@ -54,7 +54,7 @@ select @List2.Length() //return: 2
 select @List1.isEmpty() //return: 1 - true
 select @List2.isEmpty() //return: 0 - false
 ```
-- Format message
+- Format message. 
 Pattern **{\d}** replace
 ```sh
 select @List.Formated('{0} - this {1} {2}') //return: 'Hello, world  - this  !? '
