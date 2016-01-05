@@ -3,17 +3,17 @@ User-Defined Data Type List<string> for MS SQL.
 
 ### Installation
 Set DB
-```sh
+```sql
 USE [dbName];
 ```
 Enabling CLR Integration
-```sh
+```sql
 sp_configure 'clr enabled', 1
 GO
 RECONFIGURE
 ```
 Deploy
-```sh
+```sql
 if EXISTS (select * from sys.types where name='StringList') DROP TYPE dbo.StringList; 
 if EXISTS (select * from sys.assemblies where name='StringList') DROP ASSEMBLY StringList;
 
@@ -22,7 +22,7 @@ FROM '[path to StringList.dll]'
 WITH PERMISSION_SET = SAFE;
 ```
 Create Type
-```sh
+```sql
 CREATE TYPE dbo.StringList 
 EXTERNAL NAME StringList.[StringList];
 ```
@@ -30,88 +30,88 @@ EXTERNAL NAME StringList.[StringList];
 ### Use It
 As a separator used symbol **«|»**
 - Declare Variables
-```sh
+```sql
 Declare @List1 StringList
 Declare @List2 StringList = 'Hello, world | !?'
 ```
 - Convert to string
-```sh
+```sql
 select @List1.ToString() //return: 'NULL'
 select @List2.ToString() //return: 'Hello, world | !?'
 ```
 - Convert to string with another separator
-```sh
+```sql
 select @List1.Concat('-') //return: 'NULL'
 select @List2.Concat('-') //return: 'Hello, world - !?'
 ```
 - Items count
-```sh
+```sql
 select @List1.Length() //return: 0
 select @List2.Length() //return: 2
 ```
 - Get item by index
-```sh
+```sql
 select @List1.GetItem(0) or select @List2.GetItem(3) //return: 'NULL'
 select @List2.GetItem(1) //return: ' !?'
 ```
 - Get index item
-```sh
+```sql
 select @List.GetIndex(' !?') //return: -1
 select @List.GetIndex('1 !?') //return: 1
 ```
 - Check empty
-```sh
+```sql
 select @List1.isEmpty() //return: 1 - true
 select @List2.isEmpty() //return: 0 - false
 ```
 - Сontains
-```sh
+```sql
 select @List2.[Сontains]('Hello') //return: 0 - false
 select @List2.[Сontains]('Hello, world ') //return: 1 - true
 ```
 - Exists
-```sh
+```sql
 select @List2.[Exists]('Hello') //return: 1 - true
 select @List2.[Exists]('Hello, world ') //return: 1 - true
 ```
 - Format message. 
 Pattern **{\d}** replace
-```sh
+```sql
 select @List2.Formated('{0} - this {1} {2}') //return: 'Hello, world  - this  !? '
 ```
 or use static method
-```sh
+```sql
 select StringList::FormatMessage('{0} big {1} - this big {1}!', 'Hello|world') //return: 'Hello big world - this big world!'
 ```
 
 ### Manipulation
 - Add item
-```sh
+```sql
 SET @List1=@List1.[Add]('cat') //return: 'cat'
 SET @List2=@List2.[Add]('cat') //return: 'Hello, world | !?|cat'
 ```
-- Add some separator items
+- sql some separator items
 ```sh
 SET @List1=@List1.AddRange('cat|dog') //return: 'cat|dog'
 SET @List2=@List2.AddRange('cat|dog') //return: 'Hello, world | !?|cat|dog'
 ```
 - Remove item
-```sh
+```sql
 SET @List2=@List2.RemoveByName(' !?') //return: 'Hello, world '
 ```
 - Remove item by index
-```sh
+```sql
 SET @List2=@List2.RemoveByIndex(1) //return: 'Hello, world '
 ```
 - Remove all items
-```sh
+```sql
 SET @List2=@List2.RemoveAll()
 ```
 - Reverse
-```sh
+```sql
 SET @List2.Reverse() //return: ' !?|Hello, world '
 ```
 - Sort
-```sh
+```sql
 SET @List2.Sort() //return: ' !?|Hello, world '
 ```
