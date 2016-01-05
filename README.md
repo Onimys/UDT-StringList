@@ -3,11 +3,11 @@ User-Defined Data Type List<string> for MS SQL.
 
 ### Installation
 Set DB
-```ms
+```sh
 USE [dbName];
 ```
 Enabling CLR Integration
-```ms
+```sh
 sp_configure 'clr enabled', 1
 GO
 RECONFIGURE
