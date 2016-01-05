@@ -2,7 +2,7 @@
 User-Defined Data Type List<string> for MS SQL.
 
 ### Installation
-Set db:
+Set DB
 ```ms
 USE [dbName];
 ```
