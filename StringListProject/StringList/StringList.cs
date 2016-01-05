@@ -10,10 +10,12 @@ public class StringList : INullable, IBinarySerialize
 {
     private bool is_Null;
     private List<string> _list;
+    private char[] _separator;
 
     public StringList()
     {
         _list = new List<string>();
+        _separator = new char[] { '|' };
     }
 
     /// <summary>
@@ -53,7 +55,7 @@ public class StringList : INullable, IBinarySerialize
             return Null;
 
         StringList sl = new StringList();
-        string[] items = s.Value.Split(",".ToCharArray());
+        string[] items = s.Value.Split(sl._separator);
         foreach (string item in items)
         {
             sl.List.Add(item);
@@ -84,7 +86,7 @@ public class StringList : INullable, IBinarySerialize
     public StringList AddItems(string items)
     {
         items = items ?? "";
-        string[] el = items.Split(",".ToCharArray());
+        string[] el = items.Split(_separator);
         foreach (string item in el)
         {
             _list.Add(item);
@@ -153,13 +155,13 @@ public class StringList : INullable, IBinarySerialize
     /// <param name="message"></param>
     /// <returns></returns>
     [SqlMethod(OnNullCall = false, InvokeIfReceiverIsNull = true)]
-    public string FormatMessage(string message, StringList StringList)
+    public static string FormatMessage(string message, StringList StringList)
     {
         foreach (Match m in Regex.Matches(message, @"{\d{1,3}}"))
         {
-            string replace = StringList.GetItem(Int32.Parse(Regex.Match(m.Value, @"\d{1,3}").Value));
+             string replace = StringList.GetItem(Int32.Parse(Regex.Replace(m.Value, @"({|})", "")));
 
-            message = message.Replace(m.Value, (replace != "NULL") ? replace : "");
+             message = message.Replace(m.Value, (replace != "NULL") ? replace : "");
         }
 
         return message;
@@ -187,7 +189,8 @@ public class StringList : INullable, IBinarySerialize
     /// </summary>
     /// <param name="delimiter"></param>
     /// <returns></returns>
-    public string Concat(string delimiter = ",")
+    [SqlMethod(OnNullCall = false)]
+    public string Concat(string delimiter = "|")
     {
         if (IsNull)
             return "NULL";
