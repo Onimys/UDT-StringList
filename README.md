@@ -1,2 +1,2 @@
-# UDT-StringList
-User-Defined Data Type String List for ms sql
+# MS SQL StringList
+User-Defined Data Type List<string> for MS SQL
