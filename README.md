@@ -34,4 +34,25 @@ As a separator used symbol **«|»**
 Declare @List StringList
 Declare @List StringList = 'Hello, world | !?'
 ```
-- 
+- Convert to string
+```sh
+select @List.ToString() //return: 'NULL'
+select @List.ToString() //return: 'Hello, world | !?'
+```
+- Convert to string with another separator
+```sh
+select @List.Concat('-') //return: 'NULL'
+select @List.Concat('-') //return: 'Hello, world - !?'
+```
+- Items count
+```sh
+select @List.Length() //return: 0
+select @List.Length() //return: 2
+```
+- Check empty
+```sh
+select @List.isEmpty() //return: 1 - true
+select @List.isEmpty() //return: 0 - false
+```
+
+
