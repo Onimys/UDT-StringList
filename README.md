@@ -72,19 +72,42 @@ select StringList::FormatMessage('{0} big {1} - this big {1}!', 'Hello|world') /
 ### Manipulation
 - Add item
 ```sh
-SET @List1=@List1.AddItem('cat') //return: 'cat'
-SET @List2=@List2.AddItem('cat') //return: 'Hello, world | !?|cat'
+SET @List1=@List1.[Add]('cat') //return: 'cat'
+SET @List2=@List2.[Add]('cat') //return: 'Hello, world | !?|cat'
 ```
 - Add some separator items
 ```sh
 SET @List1=@List1.AddRange('cat|dog') //return: 'cat|dog'
 SET @List2=@List2.AddRange('cat|dog') //return: 'Hello, world | !?|cat|dog'
 ```
+- Remove item
+```sh
+SET @List2=@List2.RemoveByName(' !?') //return: 'Hello, world '
+```
 - Remove item by index
 ```sh
-SET @List2=@List2.RemoveItem(1) //return: 'Hello, world '
+SET @List2=@List2.RemoveByIndex(1) //return: 'Hello, world '
 ```
 - Remove all items
 ```sh
 SET @List2=@List2.RemoveAll()
 ```
+- Reverse
+```sh
+SET @List2.Reverse() //return: ' !?|Hello, world '
+```
+- Sort
+```sh
+SET @List2.Sort() //return: ' !?|Hello, world '
+```
+- Сontains
+```sh
+select @List2.Сontains('Hello') //return: 0 - false
+select @List2.Сontains('Hello, world ') //return: 1 - true
+```
+- Exists
+```sh
+select @List2.[Exists]('Hello') //return: 1 - true
+select @List2.[Exists]('Hello, world ') //return: 1 - true
+```
+
