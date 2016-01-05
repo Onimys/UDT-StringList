@@ -31,28 +31,28 @@ EXTERNAL NAME StringList.[StringList];
 As a separator used symbol **«|»**
 - Declare Variables
 ```sh
-Declare @List StringList
-Declare @List StringList = 'Hello, world | !?'
+Declare @List1 StringList
+Declare @List2 StringList = 'Hello, world | !?'
 ```
 - Convert to string
 ```sh
-select @List.ToString() //return: 'NULL'
-select @List.ToString() //return: 'Hello, world | !?'
+select @List1.ToString() //return: 'NULL'
+select @List2.ToString() //return: 'Hello, world | !?'
 ```
 - Convert to string with another separator
 ```sh
-select @List.Concat('-') //return: 'NULL'
-select @List.Concat('-') //return: 'Hello, world - !?'
+select @List1.Concat('-') //return: 'NULL'
+select @List2.Concat('-') //return: 'Hello, world - !?'
 ```
 - Items count
 ```sh
-select @List.Length() //return: 0
-select @List.Length() //return: 2
+select @List1.Length() //return: 0
+select @List2.Length() //return: 2
 ```
 - Check empty
 ```sh
-select @List.isEmpty() //return: 1 - true
-select @List.isEmpty() //return: 0 - false
+select @List1.isEmpty() //return: 1 - true
+select @List2.isEmpty() //return: 0 - false
 ```
 
 
