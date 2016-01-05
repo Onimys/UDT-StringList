@@ -56,8 +56,8 @@ select @List2.GetItem(1) //return: ' !?'
 ```
 - Get index item
 ```sql
-select @List.GetIndex(' !?') //return: -1
-select @List.GetIndex('1 !?') //return: 1
+select @List2.GetIndex(' !?') //return: -1
+select @List2.GetIndex('1 !?') //return: 1
 ```
 - Check empty
 ```sql
@@ -90,8 +90,8 @@ select StringList::FormatMessage('{0} big {1} - this big {1}!', 'Hello|world') /
 SET @List1=@List1.[Add]('cat') //return: 'cat'
 SET @List2=@List2.[Add]('cat') //return: 'Hello, world | !?|cat'
 ```
-- sql some separator items
-```sh
+- Add some separator items
+```sql
 SET @List1=@List1.AddRange('cat|dog') //return: 'cat|dog'
 SET @List2=@List2.AddRange('cat|dog') //return: 'Hello, world | !?|cat|dog'
 ```
