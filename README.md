@@ -64,6 +64,16 @@ select @List.GetIndex('1 !?') //return: 1
 select @List1.isEmpty() //return: 1 - true
 select @List2.isEmpty() //return: 0 - false
 ```
+- Сontains
+```sh
+select @List2.[Сontains]('Hello') //return: 0 - false
+select @List2.[Сontains]('Hello, world ') //return: 1 - true
+```
+- Exists
+```sh
+select @List2.[Exists]('Hello') //return: 1 - true
+select @List2.[Exists]('Hello, world ') //return: 1 - true
+```
 - Format message. 
 Pattern **{\d}** replace
 ```sh
@@ -104,14 +114,4 @@ SET @List2.Reverse() //return: ' !?|Hello, world '
 - Sort
 ```sh
 SET @List2.Sort() //return: ' !?|Hello, world '
-```
-- Сontains
-```sh
-select @List2.[Сontains]('Hello') //return: 0 - false
-select @List2.[Сontains]('Hello, world ') //return: 1 - true
-```
-- Exists
-```sh
-select @List2.[Exists]('Hello') //return: 1 - true
-select @List2.[Exists]('Hello, world ') //return: 1 - true
 ```
