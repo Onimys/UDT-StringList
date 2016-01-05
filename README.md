@@ -54,6 +54,11 @@ select @List2.Length() //return: 2
 select @List1.GetItem(0) or select @List2.GetItem(3) //return: 'NULL'
 select @List2.GetItem(1) //return: ' !?'
 ```
+- Get index item
+```sh
+select @List.GetIndex(' !?') //return: -1
+select @List.GetIndex('1 !?') //return: 1
+```
 - Check empty
 ```sh
 select @List1.isEmpty() //return: 1 - true
@@ -102,12 +107,11 @@ SET @List2.Sort() //return: ' !?|Hello, world '
 ```
 - Сontains
 ```sh
-select @List2.Сontains('Hello') //return: 0 - false
-select @List2.Сontains('Hello, world ') //return: 1 - true
+select @List2.[Сontains]('Hello') //return: 0 - false
+select @List2.[Сontains]('Hello, world ') //return: 1 - true
 ```
 - Exists
 ```sh
 select @List2.[Exists]('Hello') //return: 1 - true
 select @List2.[Exists]('Hello, world ') //return: 1 - true
 ```
-
