@@ -26,3 +26,5 @@ Create Type
 CREATE TYPE dbo.StringList 
 EXTERNAL NAME StringList.[StringList];
 ```
+
+### Use It
