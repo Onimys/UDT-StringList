@@ -15,7 +15,7 @@ RECONFIGURE
 Deploy
 ```sh
 if EXISTS (select * from sys.types where name='StringList') DROP TYPE dbo.StringList; 
-if EXISTS(select * from sys.assemblies where name='StringList') DROP ASSEMBLY StringList;
+if EXISTS (select * from sys.assemblies where name='StringList') DROP ASSEMBLY StringList;
 
 CREATE ASSEMBLY StringList
 FROM '[path to StringList.dll]' 
