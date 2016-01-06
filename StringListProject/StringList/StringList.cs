@@ -207,7 +207,8 @@ public class StringList : INullable, IBinarySerialize
     {
         if (IsNull || name.IsNull)
             return SqlInt32.Null;
-        return _list.FindIndex( q => q.Equals(name.Value));
+        SqlInt32 index = _list.FindIndex(q => q.Equals(name.Value));
+        return (index == -1) ? SqlInt32.Null: index;
     }
 
     /// <summary>
