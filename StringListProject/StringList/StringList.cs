@@ -15,7 +15,7 @@ public class StringList : INullable, IBinarySerialize
     public StringList()
     {
         _list = new List<string>();
-        _separator = new char[] { ',' };
+        _separator = new char[] { '|' };
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class StringList : INullable, IBinarySerialize
         string[] items = s.Value.Split(sl._separator);
         foreach (string item in items)
         {
-            sl.List.Add(item.Trim());
+            sl.List.Add(item);
         }
         return sl;
     }
@@ -207,8 +207,7 @@ public class StringList : INullable, IBinarySerialize
     {
         if (IsNull || name.IsNull)
             return SqlInt32.Null;
-        int index = _list.FindIndex(q => q.Equals(name.Value));
-        return (index != -1) ? index : SqlInt32.Null;
+        return _list.FindIndex( q => q.Equals(name.Value));
     }
 
     /// <summary>
@@ -240,6 +239,7 @@ public class StringList : INullable, IBinarySerialize
         return message;
     }
 
+
     /// <summary>
     /// Check for Null
     /// </summary>
@@ -253,7 +253,7 @@ public class StringList : INullable, IBinarySerialize
     [SqlMethod(InvokeIfReceiverIsNull = true)]
     public override string ToString()
     {
-        return Concat(_separator);
+        return Concat();
     }
 
     /// <summary>
@@ -261,13 +261,13 @@ public class StringList : INullable, IBinarySerialize
     /// </summary>
     /// <param name="delimiter"></param>
     /// <returns></returns>
-    [SqlMethod(OnNullCall = true)]
-    public string Concat(char[] delimiter)
+    [SqlMethod(OnNullCall = false)]
+    public string Concat(string delimiter = "|")
     {
         if (IsNull)
             return "NULL";
-        delimiter = (delimiter != null) ? delimiter : _separator;
-        return String.Join(delimiter[0].ToString(), _list.ToArray());
+
+        return String.Join(delimiter, _list.ToArray());
     }
 
     /// <summary>
