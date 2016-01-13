@@ -19,6 +19,28 @@ public class StringList : INullable, IBinarySerialize
     }
 
     /// <summary>
+    /// indexer
+    /// get_Item and set_Item
+    /// </summary>
+    /// <returns></returns>
+    public string this[int index]
+    {
+        get
+        {
+            if (IsNull || index > _list.Count - 1 || index < 0)
+                return "NULL";    
+            return _list[index];
+        }
+        [SqlMethod(IsMutator = true)]
+        set
+        {
+            if (IsNull || index > _list.Count - 1 || index < 0)
+                return; 
+            _list[index] = value;
+        }
+    }
+
+    /// <summary>
     /// Empty type
     /// </summary>
     public static StringList Null
@@ -28,18 +50,6 @@ public class StringList : INullable, IBinarySerialize
             StringList sl = new StringList();
             sl.is_Null = true;
             return sl;
-        }
-    }
-
-    public List<string> List
-    {
-        get
-        {
-            return _list;
-        }
-        set
-        {
-            _list = value;
         }
     }
 
@@ -58,7 +68,7 @@ public class StringList : INullable, IBinarySerialize
         string[] items = s.Value.Split(sl._separator);
         foreach (string item in items)
         {
-            sl.List.Add(item.Trim());
+            sl._list.Add(item.Trim());
         }
         return sl;
     }
@@ -184,18 +194,6 @@ public class StringList : INullable, IBinarySerialize
         _list.Reverse();
     }
 
-    /// <summary>
-    /// Get item by index
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    [SqlMethod(OnNullCall = false)]
-    public string GetItem(int index)
-    {
-        if (IsNull || index > _list.Count - 1 || index < 0)
-            return "NULL";
-        return _list[index];
-    }
 
     /// <summary>
     /// Get index by name
@@ -203,7 +201,7 @@ public class StringList : INullable, IBinarySerialize
     /// <param name="name"></param>
     /// <returns></returns>
     [SqlMethod(OnNullCall = false)]
-    public SqlInt32 GetIndex(SqlString name)
+    public SqlInt32 get_Index(SqlString name)
     {
         if (IsNull || name.IsNull)
             return SqlInt32.Null;
@@ -232,7 +230,7 @@ public class StringList : INullable, IBinarySerialize
     {
         foreach (Match m in Regex.Matches(message, @"{\d{1,3}}"))
         {
-             string replace = StringList.GetItem(Int32.Parse(Regex.Replace(m.Value, @"({|})", "")));
+             string replace = StringList[Int32.Parse(Regex.Replace(m.Value, @"({|})", ""))];
 
              message = message.Replace(m.Value, (replace != "NULL") ? replace : "");
         }

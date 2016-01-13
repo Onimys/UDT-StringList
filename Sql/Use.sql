@@ -17,12 +17,16 @@ select @List2.Concat('-') -- return: 'Dog-Cat-People'
 select @List1.Length() -- return: 0 
 select @List2.Length() -- return: 3 
 -- Get item by index
-select @List1.GetItem(0) -- return: 'NULL' 
-select @List2.GetItem(3) -- return: 'NULL' 
-select @List2.GetItem(1) -- return: 'Cat' 
+select @List1.get_Item(0) -- return: 'NULL' 
+select @List2.get_Item(3) -- return: 'NULL' 
+select @List2.get_Item(1) -- return: 'Cat' 
 -- Get index item
-select @List2.GetIndex('People') -- return: 2 
-select @List2.GetIndex('what') -- return: 'NULL'
+select @List2.get_Index('People') -- return: 2 
+select @List2.get_Index('what') -- return: 'NULL'
+-- Set item 
+SET @List2.set_Item(1, 'Snake') -- return: 'Dog,Snake,People'
+SET @List2.set_Item(5, 'Snake') -- return: 'Dog,Cat,People'
+SET @List2.set_Item(1, 'Cat') -- return: 'Dog,Cat,People'
 -- Check empty
 select @List1.isEmpty() -- return: 1 - true 
 select @List2.isEmpty() -- return: 0 - false
