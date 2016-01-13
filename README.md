@@ -53,7 +53,7 @@ select @List2.Length() -- return: 3
 ```sql
 select @List1.get_Item(0) -- return: 'NULL' 
 select @List2.get_Item(3) -- return: 'NULL' 
-select @List2.get_Item(1) -- return: 'Cat' '
+select @List2.get_Item(1) -- return: 'Cat'
 ```
 - Get item index
 ```sql
